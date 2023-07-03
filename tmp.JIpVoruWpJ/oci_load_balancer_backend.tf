@@ -1,7 +1,5 @@
-variable "backend_ip_address" {
-	description = "The IP address of the backend server."
+variable "backend_map" {
+	description = "Maps the IP address of the backend server with the communication port for the backend server."
+	type = map
 }
 
-variable "backend_port" {
-	description = "The communication port for the backend server."
-}

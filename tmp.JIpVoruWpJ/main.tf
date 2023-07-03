@@ -9,6 +9,11 @@ terraform {
   }
 }
 
+locals {
+    current_timestamp  = timestamp()
+    current_date       = formatdate("YYYYMMDD_hhmm", local.current_timestamp)
+}
+
 resource "oci_load_balancer_load_balancer" "test_load_balancer" {
     #Required
     compartment_id = var.compartment_id
@@ -17,9 +22,6 @@ resource "oci_load_balancer_load_balancer" "test_load_balancer" {
     subnet_ids = var.load_balancer_subnet_ids
 
     #Optional
-    #defined_tags = {"Operations.CostCenter"= "42"}
-    #freeform_tags = {"Department"= "Finance"}
-    #ip_mode = var.load_balancer_ip_mode
     is_private = var.load_balancer_is_private
     #network_security_group_ids = var.load_balancer_network_security_group_ids
     #reserved_ips {
@@ -54,29 +56,11 @@ resource "oci_load_balancer_backend_set" "test_backend_set" {
     policy = var.backend_set_policy
 
     #Optional
-#    lb_cookie_session_persistence_configuration {
-#
-#        #Optional
-#        cookie_name = var.backend_set_lb_cookie_session_persistence_configuration_cookie_name
-#        disable_fallback = var.backend_set_lb_cookie_session_persistence_configuration_disable_fallback
-#        domain = var.backend_set_lb_cookie_session_persistence_configuration_domain
-#        is_http_only = var.backend_set_lb_cookie_session_persistence_configuration_is_http_only
-#        is_secure = var.backend_set_lb_cookie_session_persistence_configuration_is_secure
-#        max_age_in_seconds = var.backend_set_lb_cookie_session_persistence_configuration_max_age_in_seconds
-#        path = var.backend_set_lb_cookie_session_persistence_configuration_path
-#    }
-#    session_persistence_configuration {
-#        #Required
-#        cookie_name = var.backend_set_session_persistence_configuration_cookie_name
-#
-#        #Optional
-#        disable_fallback = var.backend_set_session_persistence_configuration_disable_fallback
-#    }
     ssl_configuration {
 
         #Optional
         #certificate_ids = var.backend_set_ssl_configuration_certificate_ids
-        certificate_name = oci_load_balancer_certificate.test_certificate.certificate_name
+        #certificate_name = oci_load_balancer_certificate.test_certificate.certificate_name
         cipher_suite_name = var.backend_set_ssl_configuration_cipher_suite_name
         protocols = var.backend_set_ssl_configuration_protocols
         #server_order_preference = var.backend_set_ssl_configuration_server_order_preference
@@ -88,9 +72,10 @@ resource "oci_load_balancer_backend_set" "test_backend_set" {
 
 module "backend" {
   source = "./oci_load_balancer_backend"
-  backend_ip_address= var.backend_ip_address
   load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-  backend_port= var.backend_port
+  for_each = var.backend_map
+  backend_ip_address = each.key
+  backend_port = each.value
 }
 
 resource "oci_load_balancer_certificate" "test_certificate" {
