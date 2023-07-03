@@ -4,6 +4,7 @@ variable "compartment_id" {
 
 variable "load_balancer_display_name" {
 	description = "A user-friendly name. It does not have to be unique, and it is changeable."
+	default = null
 }
 
 variable "load_balancer_shape" {

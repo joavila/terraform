@@ -1,5 +1,6 @@
 variable "certificate_certificate_name" {
 	description = "A friendly name for the certificate bundle. It must be unique and it cannot be changed."
+	default = null
 }
 
 variable "certificate_ca_certificate" {

@@ -4,6 +4,7 @@ variable "load_balancer_routing_policy_condition_language_version" {
 
 variable "load_balancer_routing_policy_name" {
 	description = "The name for this list of routing rules. It must be unique and it cannot be changed."
+	default = null
 }
 
 variable "load_balancer_routing_policy_rules_actions_name" {
@@ -16,4 +17,5 @@ variable "load_balancer_routing_policy_rules_condition" {
 
 variable "load_balancer_routing_policy_rules_name" {
 	description = "A unique name for the routing policy rule. Avoid entering confidential information."
+	default = null
 }

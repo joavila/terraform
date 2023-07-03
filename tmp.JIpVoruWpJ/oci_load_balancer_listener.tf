@@ -1,5 +1,6 @@
 variable "listener_name" {
 	description = "A friendly name for the listener."
+	default = null
 }
 
 variable "listener_port" {

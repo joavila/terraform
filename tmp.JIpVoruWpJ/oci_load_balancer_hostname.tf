@@ -4,4 +4,5 @@ variable "hostname_hostname" {
 
 variable "hostname_name" {
 	description = "A friendly name for the hostname resource."
+	default = null
 }

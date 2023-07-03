@@ -11,13 +11,13 @@ terraform {
 
 locals {
     current_timestamp  = timestamp()
-    current_date       = formatdate("YYYYMMDD_hhmm", local.current_timestamp)
+    current_date       = formatdate("YYYY_MMDD_hhmm", local.current_timestamp)
 }
 
 resource "oci_load_balancer_load_balancer" "test_load_balancer" {
     #Required
     compartment_id = var.compartment_id
-    display_name = var.load_balancer_display_name
+    display_name = var.load_balancer_display_name == null ? format("lb_%s", local.current_date) : var.load_balancer_display_name 
     shape = var.load_balancer_shape
     subnet_ids = var.load_balancer_subnet_ids
 
@@ -52,7 +52,7 @@ resource "oci_load_balancer_backend_set" "test_backend_set" {
         url_path = var.backend_set_health_checker_url_path
     }
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-    name = var.backend_set_name
+    name = var.backend_set_name == null ? format("bes_%s", local.current_date) : var.backend_set_name 
     policy = var.backend_set_policy
 
     #Optional
@@ -80,7 +80,7 @@ module "backend" {
 
 resource "oci_load_balancer_certificate" "test_certificate" {
     #Required
-    certificate_name = var.certificate_certificate_name
+    certificate_name = var.certificate_certificate_name == null ? format("certificate_%s", local.current_date) : var.certificate_certificate_name
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
 
     #Optional
@@ -98,7 +98,7 @@ resource "oci_load_balancer_listener" "test_listener" {
     #Required
     default_backend_set_name = oci_load_balancer_backend_set.test_backend_set.name
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-    name = var.listener_name
+    name = var.listener_name == null ? format("listener_%s", local.current_date) : var.listener_name 
     port = var.listener_port
     protocol = var.listener_protocol
 
@@ -129,7 +129,7 @@ resource "oci_load_balancer_load_balancer_routing_policy" "test_load_balancer_ro
     #Required
     condition_language_version = var.load_balancer_routing_policy_condition_language_version
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-    name = var.load_balancer_routing_policy_name
+    name = var.load_balancer_routing_policy_name == null ? format("rp_%s", local.current_date) : var.load_balancer_routing_policy_name 
     rules {
         #Required
         actions {
@@ -138,7 +138,7 @@ resource "oci_load_balancer_load_balancer_routing_policy" "test_load_balancer_ro
             name = var.load_balancer_routing_policy_rules_actions_name
         }
         condition = var.load_balancer_routing_policy_rules_condition
-        name = var.load_balancer_routing_policy_rules_name
+        name = var.load_balancer_routing_policy_rules_name == null ? format("rule_%s", local.current_date) : var.load_balancer_routing_policy_rules_name 
     }
 }
 
@@ -146,7 +146,7 @@ resource "oci_load_balancer_hostname" "test_hostname" {
     #Required
     hostname = var.hostname_hostname
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-    name = var.hostname_name
+    name = var.hostname_name == null ? format("hostname_%s", local.current_date) : var.hostname_name
 
     #Optional
     lifecycle {

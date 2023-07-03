@@ -28,6 +28,7 @@ variable "backend_set_health_checker_url_path" {
 
 variable "backend_set_name" {
 	description = "A friendly name for the backend set. It must be unique and it cannot be changed"
+	default = null
 }
 
 variable "backend_set_policy" {
