@@ -1,7 +1,3 @@
-variable "compartment_id" {
-	description = "The OCID of the compartment in which to create the load balancer."
-}
-
 variable "load_balancer_display_name" {
 	description = "A user-friendly name. It does not have to be unique, and it is changeable."
 	default = null

@@ -17,6 +17,7 @@ variable "listener_connection_configuration_idle_timeout_in_seconds" {
 
 variable "listener_connection_configuration_backend_tcp_proxy_protocol_version" {
 	description = "The backend TCP Proxy Protocol version."
+	default = 0
 }
 
 variable "listener_ssl_configuration_cipher_suite_name" {
@@ -29,4 +30,14 @@ variable "listener_ssl_configuration_protocols" {
 
 variable "listener_ssl_configuration_server_order_preference" {
 	description = "When this attribute is set to ENABLED, the system gives preference to the server ciphers over the client ciphers."
+}
+
+variable "listener_ssl_configuration_verify_depth" {
+	description = "The maximum depth for peer certificate chain verification."
+        default = 3
+}
+
+variable "listener_ssl_configuration_verify_peer_certificate" {
+	description = "Whether the load balancer listener should verify peer certificates."
+	default = false
 }

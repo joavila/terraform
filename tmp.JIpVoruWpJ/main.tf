@@ -54,20 +54,6 @@ resource "oci_load_balancer_backend_set" "test_backend_set" {
     load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
     name = var.backend_set_name == null ? format("bes_%s", local.current_date) : var.backend_set_name 
     policy = var.backend_set_policy
-
-    #Optional
-    ssl_configuration {
-
-        #Optional
-        #certificate_ids = var.backend_set_ssl_configuration_certificate_ids
-        #certificate_name = oci_load_balancer_certificate.test_certificate.certificate_name
-        cipher_suite_name = var.backend_set_ssl_configuration_cipher_suite_name
-        protocols = var.backend_set_ssl_configuration_protocols
-        #server_order_preference = var.backend_set_ssl_configuration_server_order_preference
-        #trusted_certificate_authority_ids = var.backend_set_ssl_configuration_trusted_certificate_authority_ids
-        #verify_depth = var.backend_set_ssl_configuration_verify_depth
-        #verify_peer_certificate = var.backend_set_ssl_configuration_verify_peer_certificate
-    }
 }
 
 module "backend" {
@@ -101,14 +87,10 @@ resource "oci_load_balancer_listener" "test_listener" {
     name = var.listener_name == null ? format("listener_%s", local.current_date) : var.listener_name 
     port = var.listener_port
     protocol = var.listener_protocol
-
     #Optional
     connection_configuration {
         #Required
         idle_timeout_in_seconds = var.listener_connection_configuration_idle_timeout_in_seconds
-
-        #Optional
-        backend_tcp_proxy_protocol_version = var.listener_connection_configuration_backend_tcp_proxy_protocol_version
     }
     hostname_names = [oci_load_balancer_hostname.test_hostname.name]
     routing_policy_name = oci_load_balancer_load_balancer_routing_policy.test_load_balancer_routing_policy.name
@@ -118,10 +100,10 @@ resource "oci_load_balancer_listener" "test_listener" {
         #certificate_ids = var.listener_ssl_configuration_certificate_ids
         cipher_suite_name = var.listener_ssl_configuration_cipher_suite_name
         protocols = var.listener_ssl_configuration_protocols
-        server_order_preference = var.listener_ssl_configuration_server_order_preference
+        #server_order_preference = var.listener_ssl_configuration_server_order_preference
         #trusted_certificate_authority_ids = var.listener_ssl_configuration_trusted_certificate_authority_ids
-        #verify_depth = var.listener_ssl_configuration_verify_depth
-        #verify_peer_certificate = var.listener_ssl_configuration_verify_peer_certificate
+        verify_depth = var.listener_ssl_configuration_verify_depth
+        verify_peer_certificate = var.listener_ssl_configuration_verify_peer_certificate
     }
 }
 
