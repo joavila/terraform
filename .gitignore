@@ -1,0 +1,9 @@
+config
+terraform
+.terraform
+terraform_1.5.2_linux_386.zip
+terraform.tfvars
+terraform-states_bucket_credentials
+*.tfstate
+*.tfstate.backup
+remote-backend.tf
