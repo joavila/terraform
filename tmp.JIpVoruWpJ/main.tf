@@ -142,3 +142,13 @@ resource "oci_load_balancer_hostname" "test_hostname" {
 #    load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
 #    name = var.ssl_cipher_suite_name
 #}
+
+module "subnet" {
+  source = "./oci_core_subnet"
+  compartment_id = var.compartment_id
+  vcn_id = var.vcn_id
+  for_each = var.subnet_map
+  subnet_cidr_block = each.key
+  subnet_prohibit_internet_ingress = each.value.subnet_prohibit_internet_ingress 
+  subnet_prohibit_public_ip_on_vnic = each.value.subnet_prohibit_public_ip_on_vnic 
+}
