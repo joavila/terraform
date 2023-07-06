@@ -56,13 +56,13 @@ resource "oci_load_balancer_backend_set" "test_backend_set" {
     policy = var.backend_set_policy
 }
 
-module "backend" {
-  source = "./oci_load_balancer_backend"
-  load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
-  for_each = var.backend_map
-  backend_ip_address = each.key
-  backend_port = each.value
-}
+#module "backend" {
+#  source = "./oci_load_balancer_backend"
+#  load_balancer_id = oci_load_balancer_load_balancer.test_load_balancer.id
+#  for_each = var.backend_map
+#  backend_ip_address = each.key
+#  backend_port = each.value
+#}
 
 resource "oci_load_balancer_certificate" "test_certificate" {
     #Required
