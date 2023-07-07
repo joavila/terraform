@@ -152,3 +152,15 @@ module "subnet" {
   subnet_prohibit_internet_ingress = each.value.subnet_prohibit_internet_ingress 
   subnet_prohibit_public_ip_on_vnic = each.value.subnet_prohibit_public_ip_on_vnic 
 }
+
+module "compute" {
+  source = "./oci_core_instance"
+  instance_availability_domain = var.instance_availability_domain
+  subnet_id = module.subnet[keys(var.subnet_map)[0]].id[0]
+  source_id = var.source_id 
+  compartment_id = var.compartment_id 
+  instance_shape = var.instance_shape 
+  instance_availability_config_recovery_action = var.instance_availability_config_recovery_action 
+  instance_metadata = var.instance_metadata
+  instance_create_vnic_details_assign_public_ip = var.instance_create_vnic_details_assign_public_ip 
+}
