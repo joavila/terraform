@@ -64,6 +64,16 @@ module "backend" {
   backendset_name = oci_load_balancer_backend_set.test_backend_set.name
 }
 
+data "oci_secrets_secretbundle" "private_key" {
+    #Required
+    secret_id = var.certificate_private_key
+}
+
+data "oci_secrets_secretbundle" "passphrase" {
+    #Required
+    secret_id = var.certificate_passphrase
+}
+
 resource "oci_load_balancer_certificate" "test_certificate" {
     #Required
     certificate_name = var.certificate_certificate_name == null ? format("certificate_%s", local.current_date) : var.certificate_certificate_name
@@ -71,8 +81,8 @@ resource "oci_load_balancer_certificate" "test_certificate" {
 
     #Optional
     ca_certificate = var.certificate_ca_certificate
-    passphrase = var.certificate_passphrase
-    private_key = var.certificate_private_key
+    passphrase = base64decode(data.oci_secrets_secretbundle.passphrase.secret_bundle_content[0].content)
+    private_key = base64decode(data.oci_secrets_secretbundle.private_key.secret_bundle_content[0].content)
     public_certificate = var.certificate_public_certificate
 
     #lifecycle {
