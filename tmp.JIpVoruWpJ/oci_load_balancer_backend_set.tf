@@ -8,6 +8,7 @@ variable "backend_set_health_checker_is_force_plain_text" {
 
 variable "backend_set_health_checker_port" {
 	description = "The backend server port against which to run the health check."
+        default     = 4443
 }
 
 variable "backend_set_health_checker_retries" {
